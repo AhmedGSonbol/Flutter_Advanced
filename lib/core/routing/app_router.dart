@@ -11,9 +11,9 @@ class AppRouter
     switch(settings.name)
     {
       case Routes.onBoardingScreen:
-        return MaterialPageRoute(builder: (context) => OnboardingScreen(),);
-      case Routes.onBoardingScreen:
-        return MaterialPageRoute(builder: (context) => LoginScreen(),);
+        return MaterialPageRoute(builder: (context) => const OnboardingScreen(),);
+      case Routes.loginScreen:
+        return MaterialPageRoute(builder: (context) => const LoginScreen(),);
       default:
         return MaterialPageRoute(builder: (context) => Scaffold(
           body: Center(
