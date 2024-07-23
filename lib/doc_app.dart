@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced/core/routing/app_router.dart';
 import 'package:flutter_advanced/core/routing/routes.dart';
 import 'package:flutter_advanced/core/theming/colors.dart';
+import 'package:flutter_advanced/core/theming/themes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DocApp extends StatelessWidget
@@ -17,12 +18,9 @@ class DocApp extends StatelessWidget
       child: MaterialApp(
         initialRoute: Routes.onBoardingScreen,
         debugShowCheckedModeBanner: false,
-        title: 'Doc App',
+        title: 'Doc Doc App',
         onGenerateRoute: appRouter.generateRoute,
-        theme: ThemeData(
-          primaryColor: ColorsManager.mainColor,
-          scaffoldBackgroundColor: Colors.white
-        ),
+        theme: Themes.whiteTheme,
       ),
     );
   }
