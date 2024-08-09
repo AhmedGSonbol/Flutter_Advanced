@@ -3,7 +3,7 @@ import 'package:flutter_advanced/core/theming/colors.dart';
 import 'package:flutter_advanced/core/theming/styles.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Apptextformfield extends StatelessWidget
+class AppTextFormField extends StatelessWidget
 {
 
   final EdgeInsetsGeometry? contentPadding;
@@ -14,8 +14,10 @@ class Apptextformfield extends StatelessWidget
   final bool? isObSecureText;
   final Widget? suffixIcon;
   final String hintText;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
-  const Apptextformfield(
+  const AppTextFormField(
       {
         super.key,
         this.focusedBorder,
@@ -25,13 +27,16 @@ class Apptextformfield extends StatelessWidget
         this.hintTextStyle,
         this.isObSecureText,
         this.suffixIcon,
-        required this.hintText
+        required this.hintText,
+         this.controller,
+         this.validator,
       });
 
   @override
   Widget build(BuildContext context)
   {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
         isDense: true,
         contentPadding: contentPadding ?? EdgeInsets.symmetric(
@@ -53,14 +58,27 @@ class Apptextformfield extends StatelessWidget
                 width: 1.3
             )
         ),
+        errorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.red,
+            width: 1.3,
+          ),
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.red,
+            width: 1.3,
+          ),
+          borderRadius: BorderRadius.circular(16.0),
+        ),
         hintStyle: hintTextStyle ?? TextStyles.font14LightGrayRegular,
         hintText: hintText,
         suffixIcon: suffixIcon ?? const SizedBox(),
       ),
       obscureText: isObSecureText ?? false,
       style: TextStyles.font14DarkBlueMedium,
-
-
+      validator: validator,
 
 
     );

@@ -3,24 +3,17 @@ import 'package:flutter_advanced/core/helpers/spacing.dart';
 import 'package:flutter_advanced/core/theming/styles.dart';
 import 'package:flutter_advanced/core/widgets/appTextButton.dart';
 import 'package:flutter_advanced/core/widgets/appTextFormField.dart';
-import 'package:flutter_advanced/features/login/ui/widgets/alreadyHaveAnAccountText.dart';
-import 'package:flutter_advanced/features/login/ui/widgets/termsAndConditionsText.dart';
+import 'package:flutter_advanced/features/login/data/models/login_request_body.dart';
+import 'package:flutter_advanced/features/login/logic/cubit/login_cubit.dart';
+import 'package:flutter_advanced/features/login/ui/widgets/donot_have_an_account_text.dart';
+import 'package:flutter_advanced/features/login/ui/widgets/email_and_password.dart';
+import 'package:flutter_advanced/features/login/ui/widgets/login_bloc_listener.dart';
+import 'package:flutter_advanced/features/login/ui/widgets/terms_and_conditions_text.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen>
-{
-
-  final formKey = GlobalKey<FormState>();
-
-  bool isObsecureText = true;
-
 
   @override
   Widget build(BuildContext context) {
@@ -41,71 +34,50 @@ class _LoginScreenState extends State<LoginScreen>
                   style: TextStyles.font24BlueBold,
                 ),
 
-                verticalSpacing(8),
+                verticalSpace(8),
 
                 Text('We\'re excited to have you back, can\'t wait to see what you\'ve been up to since you last logged in.',
                   style: TextStyles.font14GrayRegular,
                 ),
 
-                verticalSpacing(36),
+                verticalSpace(36),
 
-                Form(
-                  key: formKey,
-                    child:
-                    Column(
-                      children:
-                      [
-                        Apptextformfield(
-                          hintText: 'Email',
-                        ),
-                        verticalSpacing(18.0),
-                        Apptextformfield(
-                          hintText: 'Password',
-                          isObSecureText: isObsecureText,
-                          suffixIcon: IconButton(
-                            onPressed: ()
-                            {
-                              setState(()
-                              {
-                                isObsecureText = !isObsecureText;
+                Column(
+                  children:
+                  [
+                    EmailAndPassword(),
 
-                              });
-                            },
-                            icon: isObsecureText
-                                ?
-                            Icon(Icons.visibility_off)
-                                :
-                            Icon(Icons.visibility)
-                          ),
-                        ),
+                    verticalSpace(14.0),
 
-                        verticalSpacing(14.0),
+                    Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: Text('Forgot Password?',
+                        style: TextStyles.font13BlueRegular,
+                      ),
+                    ),
 
-                        Align(
-                          alignment: AlignmentDirectional.centerEnd,
-                          child: Text('Forgot Password?',
-                            style: TextStyles.font13BlueRegular,
-                          ),
-                        ),
+                    verticalSpace(40.0),
 
-                        verticalSpacing(40.0),
+                    AppTextButton(
+                      onPressed: ()
+                      {
+                        validateThenDoLogin(context);
 
-                        AppTextButton(
-                          onPressed: (){},
-                          buttonText: 'Login',
-                        ),
+                      },
+                      buttonText: 'Login',
+                    ),
 
-                        verticalSpacing(16.0),
+                    verticalSpace(16.0),
 
-                        TermsAndConditionsText(),
+                    TermsAndConditionsText(),
 
-                        verticalSpacing(60.0),
+                    verticalSpace(60.0),
 
-                        DontHaveAccountText(),
+                    DontHaveAccountText(),
 
-                      ],
-                    )
+                    const LoginBlocListener()
 
+                  ],
                 )
               ],
             ),
@@ -113,5 +85,13 @@ class _LoginScreenState extends State<LoginScreen>
         ),
       ),
     );
+  }
+
+  void validateThenDoLogin(BuildContext context)
+  {
+    if(context.read<LoginCubit>().formKey.currentState!.validate())
+    {
+      context.read<LoginCubit>().emitLoginState();
+    }
   }
 }
